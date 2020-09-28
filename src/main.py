@@ -1,52 +1,42 @@
 # coding: utf-8
 
-# Using Gtk 3.0 library
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-import cairo
+"""
+Author: Zygnematophyce
 
-def draw_polygone(widget, cairo):
-    """ Drawing polygone with cairo. """
-    cairo.move_to(30, 30)
-    cairo.line_to(30, 55)
-    cairo.line_to(60, 55)
-    cairo.line_to(30, 70)
-    cairo.stroke_preserve()
-    cairo.set_source_rgb(1, 0, 0)
-    cairo.set_line_width(5)
-    cairo.stroke()
-    return False
+"""
+
+import tkinter as tk
+
+
+class MainWindow(tk.Tk):
+    """ Create the main window. """
+
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.title("Competence Factor")
+        self.width = 200
+        self.height = 250
+        self.geometry("{}x{}".format(self.width,
+                                     self.height))
+                
+        
+
+#class FrameWidget(tk.Tk):
+    
 
 if __name__ == "__main__":
-    print("Competence factor")
+    print("competence factor")
 
-    # Create window
-    window = Gtk.Window()
+    window = MainWindow()
 
-    # Set title of window
-    window.set_title("Competence Factor")
+    main_frame = tk.Frame(window)
+    main_canvas = tk.Canvas(main_frame)
 
-    # Set size of window
-    window.set_size_request(400, 550)
+    # x0, y0, x1, y1
+    main_canvas.create_line(150, 0, 150, 150)
+    main_canvas.create_line(0, 50, 150, 50)
 
-    # Centering the window
-    window.set_position(Gtk.WindowPosition.CENTER)
+    main_frame.pack()
+    main_canvas.pack()
 
-    # Add destroy button to quit window
-    window.connect("destroy", Gtk.main_quit)
-
-    # Create a drawing area
-    drawing_area = Gtk.DrawingArea()
-
-    # Add drawing area
-    drawing_area.connect('draw', draw_polygone)
-
-    # Add drawing area into the window
-    window.add(drawing_area)
-
-    # Show all
-    window.show_all()
-
-    # The window loop
-    Gtk.main()
+    window.mainloop()

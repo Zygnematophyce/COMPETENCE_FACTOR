@@ -3,9 +3,13 @@
 """
 Author: Zygnematophyce
 
+
+Based on radar chart from : https://en.wikipedia.org/wiki/Radar_chart
+create a custom to do list competence.
 """
 
 import tkinter as tk
+import math
 
 
 class MainWindow(tk.Tk):
@@ -32,10 +36,43 @@ if __name__ == "__main__":
     main_frame = tk.Frame(window)
     main_canvas = tk.Canvas(main_frame)
 
-    # x0, y0, x1, y1
-    main_canvas.create_line(150, 0, 150, 150)
-    main_canvas.create_line(0, 50, 150, 50)
+    pos_x = window.width/2
+    pos_y_init = 5
+    long_line = 210
 
+    # Create the main line.
+    main_canvas.create_line(pos_x,
+                            pos_y_init,
+                            pos_x,
+                            long_line)
+
+    pos_y = pos_y_init
+
+    # Create 10 transverses lines.
+    for i in range(0, 11):
+        main_canvas.create_line(pos_x - 10,
+                                pos_y,
+                                pos_x + 10,
+                                pos_y)
+
+        pos_y = long_line/10*i
+
+
+    # Add trigonometric.
+    angle = 25
+    radian = angle * (math.pi/180)
+
+    cos_val = math.cos(radian)
+    sin_val = math.sin(radian)
+
+    print(y_cos)
+    print(x_sin)
+
+    main_canvas.create_line(pos_x,
+                            long_line,
+                            x_sin,
+                            100)
+    
     main_frame.pack()
     main_canvas.pack()
 

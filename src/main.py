@@ -2,8 +2,6 @@
 
 """
 Author: Zygnematophyce
-
-
 Based on radar chart from : https://en.wikipedia.org/wiki/Radar_chart
 create a custom to do list competence.
 """
@@ -18,8 +16,8 @@ class MainWindow(tk.Tk):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.title("Competence Factor")
-        self.width = 200
-        self.height = 250
+        self.width = 500
+        self.height = 550
         self.geometry("{}x{}".format(self.width,
                                      self.height))
                 
@@ -34,7 +32,7 @@ if __name__ == "__main__":
     window = MainWindow()
 
     main_frame = tk.Frame(window)
-    main_canvas = tk.Canvas(main_frame)
+    main_canvas = tk.Canvas(main_frame, bg="white", width=500, height=550)
 
     pos_x = window.width/2
     pos_y_init = 5
@@ -59,19 +57,27 @@ if __name__ == "__main__":
 
 
     # Add trigonometric.
-    angle = 25
-    radian = angle * (math.pi/180)
+    x_center = window.width/2
+    y_center = long_line
+    
+    degres = 0
+    radian = math.radians(degres)
 
-    cos_val = math.cos(radian)
-    sin_val = math.sin(radian)
+    # x = cos(radian)*r
+    x_new = math.cos(radian)*long_line
+    
+    # y = sin(radian)*r
+    y_new = math.sin(radian)*long_line
 
-    print(y_cos)
-    print(x_sin)
+    # Centering the x and y points.
+    x_new = x_new + x_center
+    y_new = y_new + y_center
 
-    main_canvas.create_line(pos_x,
-                            long_line,
-                            x_sin,
-                            100)
+
+    main_canvas.create_line(x_center,
+                            y_center,
+                            x_new,
+                            y_new)
     
     main_frame.pack()
     main_canvas.pack()

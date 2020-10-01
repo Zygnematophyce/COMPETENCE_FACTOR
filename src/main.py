@@ -60,7 +60,7 @@ if __name__ == "__main__":
     x_center = window.width/2
     y_center = long_line
     
-    degres = 50
+    degres = 10
     radian = math.radians(degres)
 
     # x = cos(radian)*r
@@ -78,57 +78,35 @@ if __name__ == "__main__":
                             x_new,
                             y_new)
 
-    # Add point
-
-    longueur_xb = (long_line / (10*1)*math.cos(radian)) + x_center
-    longueur_yb = (long_line / (10*1)*math.sin(radian)) + y_center
-
-    print(longueur_xb)
-    print(longueur_yb)
-
-    print(math.cos(radian))
-    print(math.sin(radian))
-
-
-    main_canvas.create_line(longueur_xb,
-                            longueur_yb,
-                            longueur_xb+1,
-                            longueur_yb,
-                            width=1,
-                            fill="red")
-
-
+    # The degrees to be subtracted from the degree
+    # of the main line.
     radian_substract = math.radians(90)
-
-    xc = 5 * math.cos(radian - radian_substract) + longueur_xb
-    yc = 5 * math.sin(radian - radian_substract) + longueur_yb
-
-    print(xc)
-    print(yc)
-
-    main_canvas.create_line(xc,
-                            yc,
-                            xc+1,
-                            yc,
-                            width=1,
-                            fill="green")
-
-
-    radian_substract_more = math.radians(180)
-
-    xd = 5 * -1 * math.cos(radian - radian_substract) + longueur_xb
-    yd = 5 * -1 * math.sin(radian - radian_substract) + longueur_yb
     
-    print(xd)
-    print(yd)
+    # Create 10 transverses lines.
+    for i in range(1, 11):
+        # Adding all points centered on the main line.
+        try:
+            point_x_center = ((long_line * (10*i) /100) * math.cos(radian)) + x_center
+            point_y_center = ((long_line * (10*i) /100) * math.sin(radian)) + y_center
+        except ZeroDivisionError as e:
+            print(e)
+            point_x_center = x_center
+            point_y_center = y_center
 
-    main_canvas.create_line(xd,
-                            yd,
-                            xd+1,
-                            yd,
-                            width=1,
-                            fill="blue")
+        # Create the first points of line.
+        xa_coord_line = 5 * math.cos(radian - radian_substract) + point_x_center
+        ya_coord_line = 5 * math.sin(radian - radian_substract) + point_y_center
+
+        # Create the second points of line.
+        xb_coord_line = 5 * -1 * math.cos(radian - radian_substract) + point_x_center
+        yb_coord_line = 5 * -1 * math.sin(radian - radian_substract) + point_y_center
     
+        # Plot all transverses lines.
+        main_canvas.create_line(xa_coord_line,
+                                ya_coord_line,
+                                xb_coord_line,
+                                yb_coord_line)
+
     main_frame.pack()
     main_canvas.pack()
 

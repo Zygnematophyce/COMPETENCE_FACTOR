@@ -32,7 +32,7 @@ if __name__ == "__main__":
     window = MainWindow()
 
     main_frame = tk.Frame(window)
-    main_canvas = tk.Canvas(main_frame, bg="white", width=500, height=550)
+    main_canvas = tk.Canvas(main_frame, bg="ivory", width=500, height=550)
 
     pos_x = window.width/2
     pos_y_init = 5
@@ -48,9 +48,9 @@ if __name__ == "__main__":
 
     # Create 10 transverses lines.
     for i in range(0, 11):
-        main_canvas.create_line(pos_x - 10,
+        main_canvas.create_line(pos_x - 5,
                                 pos_y,
-                                pos_x + 10,
+                                pos_x + 5,
                                 pos_y)
 
         pos_y = long_line/10*i
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     x_center = window.width/2
     y_center = long_line
     
-    degres = 0
+    degres = 50
     radian = math.radians(degres)
 
     # x = cos(radian)*r
@@ -73,11 +73,61 @@ if __name__ == "__main__":
     x_new = x_new + x_center
     y_new = y_new + y_center
 
-
     main_canvas.create_line(x_center,
                             y_center,
                             x_new,
                             y_new)
+
+    # Add point
+
+    longueur_xb = (long_line / (10*1)*math.cos(radian)) + x_center
+    longueur_yb = (long_line / (10*1)*math.sin(radian)) + y_center
+
+    print(longueur_xb)
+    print(longueur_yb)
+
+    print(math.cos(radian))
+    print(math.sin(radian))
+
+
+    main_canvas.create_line(longueur_xb,
+                            longueur_yb,
+                            longueur_xb+1,
+                            longueur_yb,
+                            width=1,
+                            fill="red")
+
+
+    radian_substract = math.radians(90)
+
+    xc = 5 * math.cos(radian - radian_substract) + longueur_xb
+    yc = 5 * math.sin(radian - radian_substract) + longueur_yb
+
+    print(xc)
+    print(yc)
+
+    main_canvas.create_line(xc,
+                            yc,
+                            xc+1,
+                            yc,
+                            width=1,
+                            fill="green")
+
+
+    radian_substract_more = math.radians(180)
+
+    xd = 5 * -1 * math.cos(radian - radian_substract) + longueur_xb
+    yd = 5 * -1 * math.sin(radian - radian_substract) + longueur_yb
+    
+    print(xd)
+    print(yd)
+
+    main_canvas.create_line(xd,
+                            yd,
+                            xd+1,
+                            yd,
+                            width=1,
+                            fill="blue")
     
     main_frame.pack()
     main_canvas.pack()

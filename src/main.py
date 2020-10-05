@@ -8,6 +8,7 @@ create a custom to do list with skill graphical view.
 
 import tkinter as tk
 import math
+import random
 
 
 class RootWindow(tk.Tk):
@@ -28,12 +29,13 @@ class RadarChart(tk.Frame):
     def __init__(self, master, number_skill=1):
         super(RadarChart, self).__init__(master)
         self.number_skill = number_skill
+        self.master = master
 
         # Background color of canvas.
         self.background_color = "ivory"
 
-        # Width and height of canvas.
-        self.width = 500
+        # The width and height of canvas.
+        self.width = self.master.width
         self.heigth = 500
         
         # Create the canvas object.
@@ -49,7 +51,7 @@ class RadarChart(tk.Frame):
         self.length_tiny_line = 5
 
         # Centering the origin (default top-left).
-        self.origin_x = window.width/2
+        self.origin_x = self.master.width/2
         self.origin_y = self.length_main_line
         
         # defines the number of degrees according to the
@@ -58,18 +60,24 @@ class RadarChart(tk.Frame):
 
         # Create the radar chart.
         self.draw_radar_chart(self.canvas)
-   
-        # Pack canvas and Frame.
+
+        # Test draw polygon.
+        self.draw_polygon(self.canvas)
+        
+        # Pack canvas and frame objects.
         self.canvas.pack()
         self.pack()
 
 
-    def draw_radar_chart(self, canvas):
         """ Function to draw the radar chart object. """
         
+    def draw_radar_chart(self, canvas):
         # The degrees to be subtracted from the degree
         # of the main line.
         radian_substract = math.radians(90)
+
+        # Define color of radar chart.
+        color_line = "#999999"
         
         # Distribution around the circle of lines.
         for i in range(0, self.number_skill):
@@ -85,9 +93,10 @@ class RadarChart(tk.Frame):
             canvas.create_line(self.origin_x,
                                self.origin_y,
                                x_main_line,
-                               y_main_line)
+                               y_main_line,
+                               fill=color_line)
 
-            # Increment degres
+            # Increment degres.
             self.degres = self.degres + (360/self.number_skill)
 
             # Create 10 transverses lines.
@@ -114,7 +123,51 @@ class RadarChart(tk.Frame):
                 canvas.create_line(xa_coord_line,
                                    ya_coord_line,
                                    xb_coord_line,
-                                   yb_coord_line)        
+                                   yb_coord_line,
+                                   fill=color_line)        
+
+
+    def draw_polygon(self, canvas):
+        
+        # List with all coordinates of polygon.
+        coord_polygon_list = list()
+
+        # Color line of polygon.
+        color_line = "#666666"
+        
+        # Distribution around the circle of lines.
+        for i in range(0, self.number_skill):
+            
+            # Define radian.
+            radian = math.radians(self.degres)
+
+            # Random skill value.
+            skill_rank = random.randint(0, 10)
+
+            polygon_x = ((self.length_main_line * (10*skill_rank) /100) * math.cos(radian)) + self.origin_x
+            polygon_y = ((self.length_main_line * (10*skill_rank) /100) * math.sin(radian)) + self.origin_y
+
+            coord_polygon_list.extend([polygon_x, polygon_y])
+
+            # Increment degres.
+            self.degres = self.degres + (360/self.number_skill)
+        
+        # Plot simple polygon for test.
+        canvas.create_polygon(coord_polygon_list,
+                              outline=color_line,
+                              fill="",
+                              width=5)
+                              
+
+class Polygon(tk.Frame):
+    """ Class to draw the polygon  """
+
+    def __init__(self, master):
+        super(Polygon, self).__init__(master)
+
+        # Pack canvas and frame objects.
+        self.canvas.pack()
+        self.pack()
 
 
 if __name__ == "__main__":
@@ -124,10 +177,22 @@ if __name__ == "__main__":
     root_window = RootWindow()
     
     # Define the number of skill.
-    SKILL = 5    
+    SKILL = 5
     print("Number of skill : ", SKILL)
 
     # Create the radarchart.
-    create_radarchart = RadarChart(root_window, SKILL)
- 
+    draw_radarchart = RadarChart(root_window, SKILL)
+
+    # Create the irregular polygon line.
+
+    # Create the skill to-do list.
+    check_button = tk.Checkbutton(root_window,
+                                  text="hello world",
+                                  onvalue="hello world",
+                                  offvalue="",
+                                  anchor="s",
+                                  width=20)
+
+    check_button.pack()
+
     root_window.mainloop()

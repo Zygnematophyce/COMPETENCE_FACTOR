@@ -9,6 +9,7 @@ All material design from : https://material.io/resources/icons/
 """
 
 import tkinter as tk
+from tkinter import messagebox
 import math
 import random
 
@@ -187,6 +188,10 @@ class SkillBox(tk.Frame):
         # Create text associed with entry.
         self.entry_text = tk.StringVar()
 
+        # Create a Label.
+        self.list_skill_label = list()
+        self.column_skill = 1
+
         # The link of button image.
         self.add_img = "images/baseline_add_black_18dp.png"
 
@@ -197,7 +202,8 @@ class SkillBox(tk.Frame):
         self.btn_root_skill = tk.Button(self, image=self.image_btn_add,
                                         compound=tk.CENTER, relief=tk.FLAT,
                                         command=lambda:
-                                        self.__add_root_skill(self.entry_text))
+                                        self.__add_root_skill(self.entry_text,
+                                                              self.column_skill))
 
         self.width_btn_add = self.image_btn_add.width()
 
@@ -209,12 +215,33 @@ class SkillBox(tk.Frame):
         self.entry_root_skill.grid(row=0, column=1)
         self.pack()
 
-    def __add_root_skill(self, text):
+    def __add_root_skill(self, text, column_skill):
         """ Private function to add root skill. """
 
         # Recover the text from entry box.
         skill_text = text.get()
-        print("{}".format(skill_text))
+
+        # Warning when nothing is written.
+        if len(skill_text.strip()) == 0:
+            tk.messagebox.showerror(title="No skill",
+                                    message="Nothing is written")
+        else:
+
+            # Add new column for each skill.
+            column_skill = column_skill + 1
+
+            # Create a label wiht skill.
+            skill_Label = tk.Label(self)
+
+            # Add label.
+            skill_Label.config(text=skill_text)
+            skill_Label.grid(row=self.column_skill, column=1)
+
+            # Add to list of label.
+            self.list_skill_label.append(skill_Label)
+
+            # Update column_skill
+            self.column_skill = column_skill
 
 
 if __name__ == "__main__":

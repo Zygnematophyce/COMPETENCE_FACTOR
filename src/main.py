@@ -184,6 +184,10 @@ class SkillBox(tk.Frame):
         super(SkillBox, self).__init__(master)
         self.master = master
 
+        # Create text associed with entry.
+        self.entry_text = tk.StringVar()
+
+        # The link of button image.
         self.add_img = "images/baseline_add_black_18dp.png"
 
         # Create a image of button
@@ -191,16 +195,26 @@ class SkillBox(tk.Frame):
 
         # Create a button to add skill.
         self.btn_root_skill = tk.Button(self, image=self.image_btn_add,
-                                        compound=tk.CENTER, relief=tk.FLAT)
+                                        compound=tk.CENTER, relief=tk.FLAT,
+                                        command=lambda:
+                                        self.__add_root_skill(self.entry_text))
 
         self.width_btn_add = self.image_btn_add.width()
 
         # Create a Entry
-        self.entry_root_skill = tk.Entry(self, width=55)
+        self.entry_root_skill = tk.Entry(self, width=55,
+                                         textvariable=self.entry_text)
 
         self.btn_root_skill.grid(row=0, column=0)
         self.entry_root_skill.grid(row=0, column=1)
         self.pack()
+
+    def __add_root_skill(self, text):
+        """ Private function to add root skill. """
+
+        # Recover the text from entry box.
+        skill_text = text.get()
+        print("{}".format(skill_text))
 
 
 if __name__ == "__main__":

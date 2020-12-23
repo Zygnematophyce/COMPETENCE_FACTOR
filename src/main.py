@@ -20,7 +20,7 @@ class App(tk.Tk):
     def __init__(self):
         super(App, self).__init__()
         self.title("Skill Factor")
-        self.width = 500
+        self.width = 925
         self.height = 700
         self.geometry("{}x{}".format(self.width,
                                      self.height))
@@ -38,14 +38,14 @@ class RadarChart(tk.Frame):
         self.background_color = "ivory"
 
         # The width and height of canvas.
-        self.width = self.master.width
-        self.heigth = 500
+        self.width_canvas = 500
+        self.heigth_canvas = 500
 
         # Create the canvas object.
         self.canvas = tk.Canvas(self,
                                 bg=self.background_color,
-                                width=self.width,
-                                height=self.heigth)
+                                width=self.width_canvas,
+                                height=self.heigth_canvas)
 
         # Length of main line.
         self.length_main_line = 210
@@ -54,7 +54,7 @@ class RadarChart(tk.Frame):
         self.length_tiny_line = 5
 
         # Centering the origin (default top-left).
-        self.origin_x = self.master.width/2
+        self.origin_x = self.width_canvas/2
         self.origin_y = self.length_main_line
 
         # defines the number of degrees according to the
@@ -69,7 +69,7 @@ class RadarChart(tk.Frame):
 
         # Pack canvas and frame objects.
         self.canvas.pack()
-        self.pack()
+        self.grid(row=0, column=0, sticky=tk.W)
 
     def draw_radar_chart(self, canvas):
         """ Function to draw the radar chart object. """
@@ -170,20 +170,15 @@ class RadarChart(tk.Frame):
                               width=5)
 
 
-# class Polygon(tk.Frame):
-#     """ Class to draw the polygon  """
-
-#     def __init__(self, master):
-#         super(Polygon, self).__init__(master)
-#         print("Polygon")
-
-
 class SkillBox(tk.Frame):
     """ Class with all skill. """
 
     def __init__(self, master):
         super(SkillBox, self).__init__(master)
         self.master = master
+
+        self.labelframe_skill = tk.LabelFrame(self.master,
+                                              text="skill frame")
 
         # Create text associed with entry.
         self.entry_text = tk.StringVar()
@@ -192,28 +187,23 @@ class SkillBox(tk.Frame):
         self.list_skill_label = list()
         self.column_skill = 1
 
-        # The link of button image.
-        self.add_img = "images/baseline_add_black_18dp.png"
-
-        # Create a image of button
-        self.image_btn_add = tk.PhotoImage(file=self.add_img)
-
         # Create a button to add skill.
-        self.btn_root_skill = tk.Button(self, image=self.image_btn_add,
-                                        compound=tk.CENTER, relief=tk.FLAT,
+        self.btn_root_skill = tk.Button(self.labelframe_skill,
+                                        compound=tk.CENTER,
+                                        relief=tk.FLAT,
                                         command=lambda:
                                         self.__add_root_skill(self.entry_text,
                                                               self.column_skill))
 
-        self.width_btn_add = self.image_btn_add.width()
-
         # Create a Entry
-        self.entry_root_skill = tk.Entry(self, width=55,
+        self.entry_root_skill = tk.Entry(self.labelframe_skill,
+                                         width=55,
                                          textvariable=self.entry_text)
 
         self.btn_root_skill.grid(row=0, column=0)
         self.entry_root_skill.grid(row=0, column=1)
-        self.pack()
+        self.labelframe_skill.grid(row=1, column=0)
+        self.grid(row=1, column=0)
 
     def __add_root_skill(self, text, column_skill):
         """ Private function to add root skill. """
@@ -231,7 +221,7 @@ class SkillBox(tk.Frame):
             column_skill = column_skill + 1
 
             # Create a label wiht skill.
-            skill_Label = tk.Label(self)
+            skill_Label = tk.Label(self.labelframe_skill)
 
             # Add label.
             skill_Label.config(text=skill_text)
@@ -242,6 +232,23 @@ class SkillBox(tk.Frame):
 
             # Update column_skill
             self.column_skill = column_skill
+
+
+class TodoListSkill(tk.Frame):
+    """ Class for todolist of specific skill. """
+
+    def __init__(self, master):
+        super(TodoListSkill, self).__init__(master)
+        self.master = master
+
+        self.labelframe_todolist = tk.LabelFrame(self.master,
+                                                 text="<<skill>>",
+                                                 width=400,
+                                                 height=300)
+        self.label_todolist = tk.Label(self.labelframe_todolist,
+                                       text="test skill")
+
+        self.labelframe_todolist.grid(row=0, column=1, padx=10)
 
 
 if __name__ == "__main__":
@@ -257,20 +264,10 @@ if __name__ == "__main__":
     # Create the radarchart.
     draw_radarchart = RadarChart(root_window, SKILL)
 
-    # # Create the irregular polygon line.
-    # polygon = Polygon(root_window)
-
     # Create a skill part.
     skill_box = SkillBox(root_window)
 
-    # Create the skill to-do list.
-    # check_button = tk.Checkbutton(root_window,
-    #                               text="hello world",
-    #                               onvalue="hello world",
-    #                               offvalue="",
-    #                               anchor="s",
-    #                               width=20)
-
-    # check_button.pack()
+    # Create a todolist part.
+    todo_list = TodoListSkill(root_window)
 
     root_window.mainloop()
